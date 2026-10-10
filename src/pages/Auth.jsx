@@ -9,7 +9,7 @@ export default function Auth() {
   const [f, setF] = useState({ name: '', email: '', password: '' });
   const [err, setErr] = useState({});
 
-async function submit(e) {
+  async function submit(e) {
     e.preventDefault();
     let x = {};
     if (!f.email.includes('@')) x.email = 'Enter a valid email address.';
@@ -24,7 +24,7 @@ async function submit(e) {
       const response = await fetch(`http://localhost:3000${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(f) // Send the form state 'f' to the backend
+        body: JSON.stringify(f) 
       });
       
       const data = await response.json();
@@ -34,7 +34,6 @@ async function submit(e) {
         return;
       }
       
-      // If successful, save the session locally for the rest of the app to use
       db.set('session', data.user);
       nav('/profile');
       
@@ -52,11 +51,11 @@ async function submit(e) {
           <Field hidden={mode === 'login'} label="Your name" value={f.name} onChange={e => setF({ ...f, name: e.target.value })} error={err.name} />
           <Field label="Email address" type="email" value={f.email} onChange={e => setF({ ...f, email: e.target.value })} error={err.email} />
           <Field label="Password" type="password" value={f.password} onChange={e => setF({ ...f, password: e.target.value })} error={err.password} />
-          <Button>{mode === 'signup' ? 'Create account' : 'Log in'}</Button>
+          <Button type="submit">{mode === 'signup' ? 'Create account' : 'Log in'}</Button>
         </form>
         <p>
           {mode === 'signup' ? 'Already have an account?' : 'New here?'} 
-          <button className="link" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}>
+          <button className="link" type="button" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}>
             {mode === 'signup' ? 'Log in' : 'Create one'}
           </button>
         </p>

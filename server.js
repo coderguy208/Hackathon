@@ -6,8 +6,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// In-memory array acting as our hackathon database
 const users = [];
+const families = [];
 
 app.post('/api/auth/register', (req, res) => {
   const { name, email, password } = req.body;
@@ -31,6 +31,13 @@ app.post('/api/auth/login', (req, res) => {
   }
   
   res.status(200).json({ user });
+});
+
+app.post('/api/family', (req, res) => {
+  const { parents, kids, city, type } = req.body;
+  const familyProfile = { id: 'family-demo', parents, kids, city, type, verified: false };
+  families.push(familyProfile);
+  res.status(200).json({ family: familyProfile });
 });
 
 app.listen(3000, () => {

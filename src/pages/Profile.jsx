@@ -11,7 +11,7 @@ export default function Profile() {
 
   if (!s) return null;
 
-  function save(e) {
+  async function save(e) {
     e.preventDefault();
     let x = {};
     ['parents', 'kids', 'city'].forEach(k => {
@@ -21,8 +21,27 @@ export default function Profile() {
     setErr(x);
     if (Object.keys(x).length) return;
     
-    db.set('family', { ...f, id: 'family-demo', verified: db.get('family')?.verified || false });
-    nav('/dashboard');
+    try {
+      const response = await fetch('http://localhost:3000/api/family', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(f)
+      });
+
+      if (!response.ok) {
+        setErr({ city: 'Failed to save profile to server.' });
+        return;
+      }
+
+      const data = await response.json();
+      
+      // Update local store so un-migrated demo pages don't break
+      db.set('family', { ...data.family, verified: db.get('family')?.verified || false });
+      nav('/dashboard');
+      
+    } catch (error) {
+      setErr({ city: 'Server connection failed.' });
+    }
   }
 
   return (
@@ -40,7 +59,7 @@ export default function Profile() {
               {['single parent', 'two parents', 'extended family', 'other'].map(x => <option key={x}>{x}</option>)}
             </select>
           </label>
-          <Button>Save and continue</Button>
+          <Button type="submit">Save and continue</Button>
         </form>
       </Card>
     </div>
