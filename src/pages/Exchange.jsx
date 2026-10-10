@@ -116,7 +116,7 @@ export default function Exchange() {
             </div>
           </div>
           
-          <Button style={{ marginTop: '15px' }}>Post to exchange</Button>
+            <Button type="submit" style={{ marginTop: '15px' }}>Post to exchange</Button>
         </form>
       </Card>
       <div className="exchange-grid">
