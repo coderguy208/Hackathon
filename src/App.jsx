@@ -96,8 +96,8 @@ function Header() {
   const links = [
     ["/dashboard", "Schedule"],
     ["/caregivers", "Find Care"],
-    ["/network", "Networking"],
-    ["/exchange", "ChildcareSwap"],
+    ["/network", "Network"],
+    ["/exchange", "Swap"],
     ["/safety", "Safety"],
   ];
 
@@ -108,52 +108,37 @@ function Header() {
   };
 
   return (
-    <>
-      <header>
-        <NavLink to="/" className="brand">
-          <img src="/family-circle-12.svg" alt="FamilyHub logo" />
-          <span>{APP_NAME}</span>
-        </NavLink>
+    <header>
+      <NavLink to="/" className="brand">
+        <img src="/family-circle-12.svg" alt="FamilyHub logo" />
+        <span>{APP_NAME}</span>
+      </NavLink>
 
-        <nav>
-          {user &&
-            links.map(([to, label]) => (
-              <NavLink key={to} to={to}>
-                {label}
-              </NavLink>
-            ))}
-        </nav>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <NavLink to="/profile" className="quiet">Profile</NavLink>
-          <NavLink to="/settings" className="quiet">Settings</NavLink>
-          <NavLink to="/friends" className="quiet">Friend List</NavLink>
-          
-          {user ? (
-            <>
-              <span className="hello">Hi, {user.name.split(" ")[0]}</span>
-              <Button className="quiet" onClick={logout}>
-                Log out
-              </Button>
-            </>
-          ) : (
-            <NavLink className="login" to="/auth">
-              Log in
-            </NavLink>
-          )}
-        </div>
-      </header>
-
-      {user && (
-        <nav className="mobile-tabs">
-          {links.map(([to, label]) => (
+      <nav>
+        {user &&
+          links.map(([to, label]) => (
             <NavLink key={to} to={to}>
               {label}
             </NavLink>
           ))}
-        </nav>
-      )}
-    </>
+      </nav>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        {user ? (
+          <>
+            <NavLink to="/profile" className="quiet">Profile</NavLink>
+            <span className="hello">Hi, {user.name.split(" ")[0]}</span>
+            <Button className="quiet" onClick={logout}>
+              Log out
+            </Button>
+          </>
+        ) : (
+          <NavLink className="login" to="/auth">
+            Log in
+          </NavLink>
+        )}
+      </div>
+    </header>
   );
 }
 
