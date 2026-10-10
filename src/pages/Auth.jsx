@@ -9,7 +9,7 @@ export default function Auth() {
   const [f, setF] = useState({ name: '', email: '', password: '' });
   const [err, setErr] = useState({});
 
-  function submit(e) {
+async function submit(e) {
     e.preventDefault();
     let x = {};
     if (!f.email.includes('@')) x.email = 'Enter a valid email address.';
@@ -19,21 +19,28 @@ export default function Auth() {
     setErr(x);
     if (Object.keys(x).length) return;
     
-    let users = db.get('users', []);
-    let user = mode === 'login' ? users.find(u => u.email === f.email) : { id: crypto.randomUUID(), ...f };
-    
-    if (!user) {
-      setErr({ email: 'No account found with that email.' });
-      return;
+    try {
+      const endpoint = mode === 'signup' ? '/api/auth/register' : '/api/auth/login';
+      const response = await fetch(`http://localhost:3000${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(f) // Send the form state 'f' to the backend
+      });
+      
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErr({ email: data.error || 'Authentication failed' });
+        return;
+      }
+      
+      // If successful, save the session locally for the rest of the app to use
+      db.set('session', data.user);
+      nav('/profile');
+      
+    } catch (error) {
+      setErr({ email: 'Failed to connect to the backend server. Is it running?' });
     }
-    
-    if (mode === 'signup') {
-      users.push(user);
-      db.set('users', users);
-    }
-    
-    db.set('session', user);
-    nav('/profile');
   }
 
   return (
