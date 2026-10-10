@@ -96,10 +96,9 @@ function Header() {
   const links = [
     ["/dashboard", "Schedule"],
     ["/caregivers", "Find Care"],
-    ["/network", "Network"],
-    ["/exchange", "Care Exchange"],
+    ["/network", "Networking"],
+    ["/exchange", "ChildcareSwap"],
     ["/safety", "Safety"],
-    ["/profile", "Profile"],
   ];
 
   const logout = () => {
@@ -123,12 +122,13 @@ function Header() {
                 {label}
               </NavLink>
             ))}
-
-          <NavLink to="/about">About</NavLink>
-          <NavLink to="/settings">Settings</NavLink>
         </nav>
 
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <NavLink to="/profile" className="quiet">Profile</NavLink>
+          <NavLink to="/settings" className="quiet">Settings</NavLink>
+          <NavLink to="/friends" className="quiet">Friend List</NavLink>
+          
           {user ? (
             <>
               <span className="hello">Hi, {user.name.split(" ")[0]}</span>
