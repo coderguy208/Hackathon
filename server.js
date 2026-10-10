@@ -40,6 +40,22 @@ app.post('/api/family', (req, res) => {
   res.status(200).json({ family: familyProfile });
 });
 
+const verifications = []; //in memory verification
+
+app.post('/api/verification', (req, res) => {
+  const { id, consent, refs, agree, status } = req.body;
+  const newVerification = { 
+    verificationId: crypto.randomUUID(), 
+    id, 
+    consent, 
+    refs, 
+    agree, 
+    status: status || 'pending' 
+  };
+  verifications.push(newVerification);
+  res.status(200).json({ verification: newVerification });
+});
+
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });

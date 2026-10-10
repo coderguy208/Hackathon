@@ -4,16 +4,32 @@ import { Badge, Button, Card, Field } from '../App';
 import { db } from '../lib/store';
 
 export default function Safety() {
-  const [f, setF] = useState({ id: false, consent: false, refs: '', agree: false });
-  const [sent, setSent] = useState(false);
+  const [f, setF] = useState({ id: false, consent: false, phone: '', agree: false });
+  const [status, setStatus] = useState('idle'); // 'idle' | 'loading' | 'approved'
 
-  function submit(e) {
+  async function submit(e) {
     e.preventDefault();
-    if (!f.id || !f.consent || !f.agree || !f.refs.trim()) {
-      return alert('Please complete each safety step.');
+    
+    // Basic validation: Check boxes and ensure phone has at least 10 characters
+    if (!f.id || !f.consent || !f.agree) {
+      return alert('Please check all agreement boxes.');
     }
-    db.set('verification', { ...f, status: 'pending' });
-    setSent(true);
+    const phoneClean = f.phone.replace(/[^0-9]/g, '');
+    if (phoneClean.length < 10) {
+      return alert('Please enter a valid phone number with at least 10 digits.');
+    }
+
+    setStatus('loading');
+
+    // Simulate network delay and instant admin approval for the demo
+    setTimeout(() => {
+      // Auto-verify the family in the local database to unlock the Exchange page
+      let family = db.get('family');
+      if (family) {
+        db.set('family', { ...family, verified: true });
+      }
+      setStatus('approved');
+    }, 2000);
   }
 
   return (
@@ -26,12 +42,22 @@ export default function Safety() {
         </div>
       </div>
       <Card className="verify">
-        {sent ? (
+        {status === 'loading' && (
           <div className="success">
-            <h2>Verification submitted</h2>
-            <p>Your demo request is pending approval. Admin route: <code>/admin</code></p>
+            <h2>Verifying...</h2>
+            <p>Securely processing your information. Please wait.</p>
           </div>
-        ) : (
+        )}
+        
+        {status === 'approved' && (
+          <div className="success">
+            <h2>Verification Approved!</h2>
+            <p>Your family is now verified. You can now access the Care Exchange.</p>
+            <NavLink to="/exchange" className="btn" style={{ marginTop: '1rem' }}>Go to Care Exchange</NavLink>
+          </div>
+        )}
+
+        {status === 'idle' && (
           <form onSubmit={submit}>
             <label className="check">
               <input type="checkbox" checked={f.id} onChange={e => setF({ ...f, id: e.target.checked })} /> I uploaded my photo ID (demo only — no file is stored)
@@ -39,11 +65,19 @@ export default function Safety() {
             <label className="check">
               <input type="checkbox" checked={f.consent} onChange={e => setF({ ...f, consent: e.target.checked })} /> I consent to a background check (demo feature)
             </label>
-            <Field label="Two references" value={f.refs} onChange={e => setF({ ...f, refs: e.target.value })} placeholder="Name and contact for each reference" />
+            
+            <Field 
+              label="Phone number" 
+              type="tel"
+              value={f.phone} 
+              onChange={e => setF({ ...f, phone: e.target.value })} 
+              placeholder="(555) 123-4567" 
+            />
+            
             <label className="check">
               <input type="checkbox" checked={f.agree} onChange={e => setF({ ...f, agree: e.target.checked })} /> I agree to the community safety agreement
             </label>
-            <Button>Submit for review</Button>
+            <Button type="submit">Submit for review</Button>
           </form>
         )}
       </Card>
