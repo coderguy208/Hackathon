@@ -28,7 +28,6 @@ import {
 } from "./pages";
 
 import "./index.css";
-import "./phase1.css";
 
 const muiTheme = createTheme({
   palette: {
