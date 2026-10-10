@@ -8,6 +8,11 @@ export default function Exchange() {
   const [items, setItems] = useState(db.get('exchanges', []));
   const [type, setType] = useState('need');
   const [message, setMessage] = useState('');
+  
+  // New state variables for location API
+  const [zip, setZip] = useState('');
+  const [locationStr, setLocationStr] = useState('');
+  const [fetching, setFetching] = useState(false);
 
   if (!family?.verified) {
     return (
@@ -20,15 +25,46 @@ export default function Exchange() {
     );
   }
 
+  // The API fetch function
+  async function handleZipChange(e) {
+    const val = e.target.value.replace(/[^0-9]/g, '');
+    setZip(val);
+    
+    if (val.length === 5) {
+      setFetching(true);
+      try {
+        const res = await fetch(`https://api.zippopotam.us/us/${val}`);
+        if (res.ok) {
+          const data = await res.json();
+          const city = data.places[0]['place name'];
+          const state = data.places[0]['state abbreviation'];
+          setLocationStr(`${city}, ${state}`);
+        } else {
+          setLocationStr('Invalid ZIP');
+        }
+      } catch (err) {
+        setLocationStr('API Error');
+      } finally {
+        setFetching(false);
+      }
+    } else {
+      setLocationStr('');
+    }
+  }
+
   function add(e) {
     e.preventDefault();
+    if (!locationStr || locationStr === 'Invalid ZIP' || locationStr === 'API Error') {
+      return alert('Please enter a valid ZIP code to set your area.');
+    }
+
     let a = [
       {
         id: crypto.randomUUID(),
         author: family.parents,
         type,
-        area: family.city,
-        date: '2026-10-10',
+        area: locationStr, // Uses the API-fetched string
+        date: new Date().toLocaleDateString(),
         time: 'Flexible',
         age: 'All ages',
         body: clean(message)
@@ -38,6 +74,8 @@ export default function Exchange() {
     setItems(a);
     db.set('exchanges', a);
     setMessage('');
+    setZip('');
+    setLocationStr('');
   }
 
   return (
@@ -59,9 +97,26 @@ export default function Exchange() {
                 <option value="offer">Offer help</option>
               </select>
             </label>
-            <Field label="Details" value={message} onChange={e => setMessage(e.target.value)} placeholder="Date, time, area…" />
+            <Field label="Details" value={message} onChange={e => setMessage(e.target.value)} placeholder="Date, time, requirements…" />
           </div>
-          <Button>Post to exchange</Button>
+          
+          <div className="split" style={{ marginTop: '15px' }}>
+            <Field 
+              label="Area ZIP Code" 
+              value={zip} 
+              onChange={handleZipChange} 
+              placeholder="e.g. 85281" 
+              maxLength="5"
+            />
+            <div className="field">
+              <span>Detected Area</span>
+              <div style={{ padding: '11px', background: '#f4f8fa', borderRadius: '9px', minHeight: '44px', color: '#5b747b' }}>
+                {fetching ? 'Fetching area...' : (locationStr || 'Enter 5-digit ZIP')}
+              </div>
+            </div>
+          </div>
+          
+          <Button style={{ marginTop: '15px' }}>Post to exchange</Button>
         </form>
       </Card>
       <div className="exchange-grid">
@@ -72,8 +127,8 @@ export default function Exchange() {
             </Badge>
             <h2>{x.author}</h2>
             <p>{x.body}</p>
-            <p><b>{x.date}</b> · {x.time}<br />{x.area} · children {x.age}</p>
-            <Button className="small" onClick={() => alert('Demo message opened. In production, this would be a private in-app conversation.')}>
+            <p><b>{x.date}</b> · {x.time}<br />📍 {x.area} · children {x.age}</p>
+            <Button className="small" onClick={() => alert('Demo message opened.')}>
               Message family
             </Button>
           </Card>
