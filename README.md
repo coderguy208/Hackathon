@@ -4,7 +4,7 @@
 
 FamilyHub is a warm, local-first family coordination app created for a hackathon demo. It helps single parents and busy families keep schedules organized, discover trusted caregivers, connect with their community, and coordinate a verified care exchange.
 
-**🌐 Live Demo:** [https://hacksforhumanityteam-6.vercel.app/](https://hacksforhumanityteam-6.vercel.app/)[cite: 11]
+**🌐 Live Demo:** [hacksforhumanity2026-team6.vercel.app](https://hacksforhumanity2026-team6.vercel.app/)
 
 ## Features
 
