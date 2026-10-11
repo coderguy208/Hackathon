@@ -21,27 +21,9 @@ export default function Profile() {
     setErr(x);
     if (Object.keys(x).length) return;
     
-    try {
-      const response = await fetch('http://localhost:3000/api/family', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(f)
-      });
-
-      if (!response.ok) {
-        setErr({ city: 'Failed to save profile to server.' });
-        return;
-      }
-
-      const data = await response.json();
-      
-      // Update local store so un-migrated demo pages don't break
-      db.set('family', { ...data.family, verified: db.get('family')?.verified || false });
-      nav('/dashboard');
-      
-    } catch (error) {
-      setErr({ city: 'Server connection failed.' });
-    }
+    // Bypass localhost fetch for static Vercel deployment
+    db.set('family', { ...f, verified: db.get('family')?.verified || false });
+    nav('/dashboard');
   }
 
   return (
