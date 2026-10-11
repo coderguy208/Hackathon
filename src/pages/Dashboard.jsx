@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Badge, Button, Card, Field, Modal } from '../App';
 import { clean, db } from '../lib/store';
 
@@ -29,14 +30,55 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="page-head">
+      <div className="page-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <Badge tone="green">Family schedule</Badge>
           <h1>Good morning, {session.name.split(' ')[0]}.</h1>
           <p>Here’s the week ahead — you’ve got this.</p>
         </div>
-        <Button onClick={() => { setEditing(null); setOpen(true); }}>+ Add to schedule</Button>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <Button 
+            className="quiet" 
+            onClick={() => alert('Google Calendar OAuth flow would initiate here for the production app.')}
+            style={{ border: '1px solid #d1e3df' }}
+          >
+            Sync Google Calendar
+          </Button>
+          <Button onClick={() => { setEditing(null); setOpen(true); }}>+ Add to schedule</Button>
+        </div>
       </div>
+      
+      {/* Quick Access Bento Cards - Clean Horizontal Layout */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+        
+        <NavLink to="/exchange" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Card style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem', background: '#ffffff', border: '1px solid #d1e3df', boxShadow: '0 2px 8px rgba(46, 113, 102, 0.04)', cursor: 'pointer' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ fontSize: '1.75rem', width: '3.5rem', height: '3.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f7f5', borderRadius: '12px' }}>🧸</div>
+              <div>
+                <h3 style={{ margin: 0, color: '#2e7166', fontSize: '1.1rem' }}>Child Care Swap</h3>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#5b747b' }}>Trade time with verified parents</p>
+              </div>
+            </div>
+            <div style={{ color: '#2e7166', fontSize: '1.25rem', fontWeight: 'bold', paddingLeft: '1rem' }}>→</div>
+          </Card>
+        </NavLink>
+
+        <NavLink to="/network" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Card style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem', background: '#ffffff', border: '1px solid #d8e5ee', boxShadow: '0 2px 8px rgba(53, 107, 148, 0.04)', cursor: 'pointer' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ fontSize: '1.75rem', width: '3.5rem', height: '3.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f2f6f9', borderRadius: '12px' }}>🏘️</div>
+              <div>
+                <h3 style={{ margin: 0, color: '#356b94', fontSize: '1.1rem' }}>Local Community</h3>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#5b747b' }}>Connect with nearby families</p>
+              </div>
+            </div>
+            <div style={{ color: '#356b94', fontSize: '1.25rem', fontWeight: 'bold', paddingLeft: '1rem' }}>→</div>
+          </Card>
+        </NavLink>
+
+      </div>
+
       <div className="dashboard">
         <Card className="calendar">
           <div className="calendar-top">
@@ -74,6 +116,7 @@ export default function Dashboard() {
           {!events.length && <p className="empty">No events yet. Add one above.</p>}
         </Card>
       </div>
+      
       {open && <EventModal event={editing} onClose={() => setOpen(false)} onSave={save} onDelete={id => {
         let a = events.filter(e => e.id !== id);
         db.set('events', a);

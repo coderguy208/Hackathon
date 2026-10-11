@@ -94,9 +94,8 @@ export function Modal({ title, children, onClose }) {
 function Header() {
   const [user, setUser] = useState(db.get("session"));
   const navigate = useNavigate();
-  const location = useLocation(); //tracks the current page URL
+  const location = useLocation(); 
 
-  //check for a session update every time the page URL changes
   useEffect(() => {
     setUser(db.get("session"));
   }, [location]);
@@ -109,12 +108,13 @@ function Header() {
 
   return (
     <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <NavLink to="/" className="brand">
+      <NavLink to={user ? "/dashboard" : "/"} className="brand">
         <img src="/family-circle-12.svg" alt="FamilyHub logo" />
-        <span>{APP_NAME}</span>
+        <span>FamilyHub</span>
       </NavLink>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <NavLink to="/dashboard" className="quiet">Dashboard</NavLink>
         <NavLink to="/friends" className="quiet">Friends</NavLink>
         <NavLink to="/settings" className="quiet">Settings</NavLink>
         <NavLink to="/profile" className="quiet">Profile</NavLink>
