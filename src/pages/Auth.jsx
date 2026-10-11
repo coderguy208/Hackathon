@@ -15,31 +15,18 @@ export default function Auth() {
     if (!f.email.includes('@')) x.email = 'Enter a valid email address.';
     if (f.password.length < 4) x.password = 'Use at least 4 characters.';
     if (mode === 'signup' && !f.name.trim()) x.name = 'Your name is required.';
-    
+
     setErr(x);
     if (Object.keys(x).length) return;
-    
-    try {
-      const endpoint = mode === 'signup' ? '/api/auth/register' : '/api/auth/login';
-      const response = await fetch(`http://localhost:3000${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(f) 
-      });
-      
-      const data = await response.json();
 
-      if (!response.ok) {
-        setErr({ email: data.error || 'Authentication failed' });
-        return;
-      }
-      
-      db.set('session', data.user);
-      nav('/profile');
-      
-    } catch (error) {
-      setErr({ email: 'Failed to connect to the backend server. Is it running?' });
-    }
+    // Bypassing localhost fetch for static Vercel deployment
+    const userToSave = {
+      name: mode === 'signup' ? f.name : (f.email.split('@')[0] || 'Family'),
+      email: f.email
+    };
+
+    db.set('session', userToSave);
+    nav('/dashboard');
   }
 
   return (
@@ -55,9 +42,9 @@ export default function Auth() {
         </form>
         <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.95rem', color: '#5b747b' }}>
           {mode === 'signup' ? 'Already have an account?' : 'New here?'}{' '}
-          <button 
-            className="link" 
-            type="button" 
+          <button
+            className="link"
+            type="button"
             style={{ fontWeight: '600' }}
             onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}
           >
