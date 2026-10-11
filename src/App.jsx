@@ -6,8 +6,9 @@ import {
   NavLink,
   Navigate,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button as MuiButton,
   CssBaseline,
@@ -93,14 +94,12 @@ export function Modal({ title, children, onClose }) {
 function Header() {
   const [user, setUser] = useState(db.get("session"));
   const navigate = useNavigate();
+  const location = useLocation(); //tracks the current page URL
 
-  const links = [
-    ["/dashboard", "Schedule"],
-    ["/caregivers", "Find Care"],
-    ["/network", "Community"],
-    ["/exchange", "ChildcareSwap"],
-    ["/safety", "Safety"],
-  ];
+  //check for a session update every time the page URL changes
+  useEffect(() => {
+    setUser(db.get("session"));
+  }, [location]);
 
   const logout = () => {
     db.set("session", null);
@@ -109,25 +108,16 @@ function Header() {
   };
 
   return (
-    <header>
+    <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <NavLink to="/" className="brand">
         <img src="/family-circle-12.svg" alt="FamilyHub logo" />
         <span>{APP_NAME}</span>
       </NavLink>
 
-      <nav>
-        {user &&
-          links.map(([to, label]) => (
-            <NavLink key={to} to={to}>
-              {label}
-            </NavLink>
-          ))}
-      </nav>
-
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <NavLink to="/profile" className="quiet">Profile</NavLink>
+        <NavLink to="/friends" className="quiet">Friends</NavLink>
         <NavLink to="/settings" className="quiet">Settings</NavLink>
-        <NavLink to="/friends" className="quiet">Friend List</NavLink>
+        <NavLink to="/profile" className="quiet">Profile</NavLink>
         
         {user ? (
           <>
