@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Badge, Button, Card, Field } from '../App';
 import { db } from '../lib/store';
+import BackButton from '../components/BackButton';
 
 export default function Safety() {
   const [f, setF] = useState({ consent: false, phone: '', agree: false });
@@ -56,6 +57,7 @@ export default function Safety() {
 
   return (
     <>
+      <BackButton fallback="/exchange" />
       <div className="page-head">
         <div>
           <Badge tone="green">Safety & verification</Badge>

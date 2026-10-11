@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Badge, Button, Card } from '../App';
 import { clean, db } from '../lib/store';
+import BackButton from '../components/BackButton';
 
 export default function Network() {
   const [groups, setGroups] = useState(db.get('groups', []));
@@ -24,6 +25,7 @@ export default function Network() {
 
   return (
     <>
+      <BackButton />
       <div className="page-head">
         <div>
           <Badge tone="green">Family community</Badge>
