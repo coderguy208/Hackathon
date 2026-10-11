@@ -1,3 +1,4 @@
+
 import {
   BrowserRouter,
   Routes,
@@ -15,17 +16,17 @@ import {
 } from "@mui/material";
 
 import { APP_NAME, db, seedDemoData } from "./lib/store";
-import {
-  Landing,
-  Auth,
-  Profile,
-  Dashboard,
-  Caregivers,
-  Network,
-  Exchange,
-  Safety,
-  Info,
-} from "./pages";
+
+import Landing from "./pages/Landing";
+import Auth from "./pages/Auth";
+import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
+import Caregivers from "./pages/Caregivers";
+import Network from "./pages/Network";
+import Exchange from "./pages/Exchange";
+import Safety from "./pages/Safety";
+import Info from "./pages/Info";
+import Friends from "./pages/Friends";
 
 import "./index.css";
 
@@ -96,10 +97,9 @@ function Header() {
   const links = [
     ["/dashboard", "Schedule"],
     ["/caregivers", "Find Care"],
-    ["/network", "Network"],
-    ["/exchange", "Care Exchange"],
+    ["/network", "Community"],
+    ["/exchange", "ChildcareSwap"],
     ["/safety", "Safety"],
-    ["/profile", "Profile"],
   ];
 
   const logout = () => {
@@ -123,12 +123,13 @@ function Header() {
                 {label}
               </NavLink>
             ))}
-
-          <NavLink to="/about">About</NavLink>
-          <NavLink to="/settings">Settings</NavLink>
         </nav>
 
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <NavLink to="/profile" className="quiet">Profile</NavLink>
+          <NavLink to="/settings" className="quiet">Settings</NavLink>
+          <NavLink to="/friends" className="quiet">Friend List</NavLink>
+          
           {user ? (
             <>
               <span className="hello">Hi, {user.name.split(" ")[0]}</span>
@@ -223,6 +224,15 @@ export default function App() {
               element={
                 <Required>
                   <Exchange />
+                </Required>
+              }
+            />
+
+            <Route
+              path="/friends"
+              element={
+                <Required>
+                  <Friends />
                 </Required>
               }
             />
