@@ -26,6 +26,7 @@ import Network from "./pages/Network";
 import Exchange from "./pages/Exchange";
 import Safety from "./pages/Safety";
 import Info from "./pages/Info";
+import Friends from "./pages/Friends";
 
 import "./index.css";
 
@@ -223,6 +224,15 @@ export default function App() {
               element={
                 <Required>
                   <Exchange />
+                </Required>
+              }
+            />
+
+            <Route
+              path="/friends"
+              element={
+                <Required>
+                  <Friends />
                 </Required>
               }
             />
