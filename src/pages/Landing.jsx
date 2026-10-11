@@ -9,15 +9,12 @@ export default function Landing() {
           <Badge tone="green">Family life, made lighter</Badge>
           <h1>Everything your family needs, in one place</h1>
           <p>Coordinate the week, find trusted care, and build the village that helps your family thrive.</p>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <NavLink className="btn" to="/exchange">ChildcareSwap</NavLink>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <NavLink className="btn quiet" style={{ flex: 1, padding: '0.25rem 0.5rem', fontSize: '0.875rem' }} to="/exchange?role=parent">Parents</NavLink>
-                <NavLink className="btn quiet" style={{ flex: 1, padding: '0.25rem 0.5rem', fontSize: '0.875rem' }} to="/exchange?role=volunteer">Volunteers</NavLink>
-              </div>
-            </div>
-            <NavLink className="btn" style={{ alignSelf: 'flex-start' }} to="/network">Networking</NavLink>
+          
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1.5rem', alignItems: 'center' }}>
+            <NavLink className="btn" to="/exchange">ChildcareSwap</NavLink>
+            <NavLink className="btn quiet" to="/exchange?role=parent">Parents</NavLink>
+            <NavLink className="btn quiet" to="/exchange?role=volunteer">Volunteers</NavLink>
+            <NavLink className="btn" to="/network">Community</NavLink>
           </div>
         </div>
         <div className="hero-art">
@@ -31,7 +28,7 @@ export default function Landing() {
         {[
           ['▦', 'Shared schedule', 'Work, school, appointments, and care needs — clearly together.'],
           ['♡', 'Trusted caregivers', 'Get to know vetted care nearby, before you need it.'],
-          ['◌', 'Your family network', 'Share wisdom and build meaningful local connections.']
+          ['◌', 'Your family community', 'Share wisdom and build meaningful local connections.']
         ].map(x => (
           <Card key={x[1]}>
             <i>{x[0]}</i>

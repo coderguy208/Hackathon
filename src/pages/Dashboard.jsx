@@ -5,10 +5,20 @@ import { clean, db } from '../lib/store';
 const cats = { work: '#5286c1', school: '#6f9f86', health: '#d17d65', family: '#c49448', event: '#8b77bf' };
 
 export default function Dashboard() {
+  const session = db.get('session');
   const [events, setEvents] = useState(db.get('events', []));
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [view, setView] = useState('week');
+
+  if (!session) {
+    return (
+      <div className="page-head">
+        <h1>Session not found</h1>
+        <p>Please log in to access your family dashboard.</p>
+      </div>
+    );
+  }
 
   const save = x => {
     let all = editing ? events.map(e => e.id === x.id ? x : e) : [...events, x];
@@ -22,7 +32,7 @@ export default function Dashboard() {
       <div className="page-head">
         <div>
           <Badge tone="green">Family schedule</Badge>
-          <h1>Good morning, {db.get('session').name.split(' ')[0]}.</h1>
+          <h1>Good morning, {session.name.split(' ')[0]}.</h1>
           <p>Here’s the week ahead — you’ve got this.</p>
         </div>
         <Button onClick={() => { setEditing(null); setOpen(true); }}>+ Add to schedule</Button>
@@ -110,7 +120,7 @@ function EventModal({ event, onClose, onSave, onDelete }) {
           </select>
         </label>
         <div className="actions">
-          <Button>Save event</Button>
+          <Button type="submit">Save event</Button>
           {event && <Button type="button" className="danger" onClick={() => { onDelete(event.id); onClose(); }}>Delete</Button>}
         </div>
       </form>
