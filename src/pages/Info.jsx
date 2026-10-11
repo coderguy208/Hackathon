@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, NavLink } from 'react-router-dom';
 import { Badge, Button, Card, Field } from '../App';
 import { db } from '../lib/store';
+import BackButton from '../components/BackButton';
 
 export default function Info() {
   const { page } = useParams();
@@ -30,6 +31,7 @@ export default function Info() {
     
     return (
       <Card>
+        <BackButton />
         <h1>Demo admin</h1>
         <p>Enter demo password <code>familyhub-demo</code> to approve the current family.</p>
         <Field label="Admin password" type="password" value={pass} onChange={e => setPass(e.target.value)} />
@@ -46,6 +48,7 @@ export default function Info() {
 
   return (
     <Card className="info">
+      <BackButton />
       <Badge>FamilyHub</Badge>
       <h1>{text[0]}</h1>
       <p>{text[1]}</p>

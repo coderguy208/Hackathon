@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Badge, Button, Card, Field, Modal } from '../App';
 import { clean, db } from '../lib/store';
+import BackButton from '../components/BackButton';
 
 export default function Caregivers() {
   const [list] = useState(db.get('caregivers', []));
@@ -18,6 +19,7 @@ export default function Caregivers() {
 
   return (
     <>
+      <BackButton />
       <div className="page-head">
         <div>
           <Badge>Caregiver directory</Badge>
