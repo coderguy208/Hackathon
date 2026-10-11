@@ -53,12 +53,17 @@ export default function Auth() {
           <Field label="Password" type="password" value={f.password} onChange={e => setF({ ...f, password: e.target.value })} error={err.password} />
           <Button type="submit">{mode === 'signup' ? 'Create account' : 'Log in'}</Button>
         </form>
-        <p>
-          {mode === 'signup' ? 'Already have an account?' : 'New here?'} 
-          <button className="link" type="button" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}>
+        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.95rem', color: '#5b747b' }}>
+          {mode === 'signup' ? 'Already have an account?' : 'New here?'}{' '}
+          <button 
+            className="link" 
+            type="button" 
+            style={{ fontWeight: '600' }}
+            onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}
+          >
             {mode === 'signup' ? 'Log in' : 'Create one'}
           </button>
-        </p>
+        </div>
       </Card>
     </div>
   );

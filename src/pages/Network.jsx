@@ -36,19 +36,32 @@ export default function Network() {
           <Card>
             <h3>Community groups</h3>
             {groups.map(g => (
-              <div className="group" key={g.id}>
+              <div className="group" key={g.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span>
                   <b>{g.name}</b>
                   <small>{g.members} families</small>
                 </span>
-                <button className="link" onClick={() => group(g.id)}>{g.joined ? 'Leave' : 'Join'}</button>
+                <Button
+                  className={`small ${g.joined ? 'quiet' : ''}`}
+                  style={{
+                    minWidth: '70px',
+                    padding: '0.35rem 0.75rem',
+                    fontSize: '0.85rem',
+                    border: g.joined ? '1.5px solid #2e7166' : '1.5px solid transparent',
+                    color: g.joined ? '#2e7166' : '#ffffff',
+                    backgroundColor: g.joined ? 'transparent' : '#2e7166',
+                  }}
+                  onClick={() => group(g.id)}
+                >
+                  {g.joined ? 'Leave' : 'Join'}
+                </Button>
               </div>
             ))}
           </Card>
           <Card>
             <h3>Nearby families</h3>
-            <p>Jordan & Kai · 1.2 mi</p>
-            <Button className="small">Follow</Button>
+            <p style={{ margin: '0 0 0.75rem 0' }}>Jordan & Kai · 1.2 mi</p>
+            <Button className="small" style={{ marginTop: '0.5rem' }}>Follow</Button>
           </Card>
         </aside>
         <div>
