@@ -7,7 +7,7 @@ FamilyHub is a local-first family coordination app created for a hackathon demo.
 **Note:** This project is configured to run locally for the full integrated backend and frontend experience.
 
 ## Features 
-https://hack-for-humanity-one.vercel.app/auth
+[https://hack-for-humanity-one.vercel.app/auth](https://hack-for-humanity-one.vercel.app/)
 
 - **Verification & Safety** — Verification requires an ID, Address, Phone number, and a check of criminal records.
 - **Child Care Swap** — Users must verify first before accessing the swap. Parents who require childcare can access a page where volunteers post their availability, and volunteers can add their specific time availability. Contact information is restricted to only show general location and a phone number.
