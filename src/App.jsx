@@ -97,7 +97,7 @@ function Header() {
   const links = [
     ["/dashboard", "Schedule"],
     ["/caregivers", "Find Care"],
-    ["/network", "Networking"],
+    ["/network", "Community"],
     ["/exchange", "ChildcareSwap"],
     ["/safety", "Safety"],
   ];

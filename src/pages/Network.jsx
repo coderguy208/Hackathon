@@ -26,7 +26,7 @@ export default function Network() {
     <>
       <div className="page-head">
         <div>
-          <Badge tone="green">Family network</Badge>
+          <Badge tone="green">Family community</Badge>
           <h1>Your village is here.</h1>
           <p>Helpful ideas and friendly faces from families nearby.</p>
         </div>
@@ -55,10 +55,10 @@ export default function Network() {
           <Card>
             <form onSubmit={post}>
               <label className="field">
-                <span>Share with your network</span>
+                <span>Share with your community</span>
                 <textarea value={text} onChange={e => setText(e.target.value)} placeholder="Ask a question or share a win…" />
               </label>
-              <Button>Post update</Button>
+              <Button type="submit">Post update</Button>
             </form>
           </Card>
           {posts.map(p => (
